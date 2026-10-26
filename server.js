@@ -5,7 +5,7 @@ import { errorResponse, successResponse } from './src/utils/response.js';
 import { validateBody, validateParams } from './src/middlewares/validate.js';
 
 const app = express()
-const port = 3000
+const port = 3020
 const { Pool } = pg
 
 const pool = new Pool({
@@ -39,7 +39,7 @@ app.use((req, res, next) => {
 // Joi validation schema
 const biodataSchema = Joi.object({
     id: Joi.number().integer().positive(),
-    nama: Joi.string.trim().min(2).max(100).required(),
+    nama: Joi.string().trim().min(2).max(100).required(),
     nim: Joi.string().trim().min(5).max(20).required(),
     kelas: Joi.string().trim().min(1).max(20).required(),
 })
