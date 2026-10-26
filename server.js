@@ -26,6 +26,7 @@ app.use((req, res, next) => {
         console.log({
             methode: req.method,
             url: req.originalUrl,
+            status: res.statusCode,
         })
     })
 
