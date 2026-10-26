@@ -24,7 +24,8 @@ app.use((req, res, next) => {
         const duration = Date.now() - start
 
         console.log({
-            methode: req.method
+            methode: req.method,
+            url: req.originalUrl,
         })
     })
 
