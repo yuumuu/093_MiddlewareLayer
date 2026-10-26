@@ -27,6 +27,7 @@ app.use((req, res, next) => {
             methode: req.method,
             url: req.originalUrl,
             status: res.statusCode,
+            duration: `${duration} ms`,
         })
     })
 
