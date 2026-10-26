@@ -85,5 +85,15 @@ function validateBody(schema) {
                 }))
             )
         }
+
+        req.body = value
+        next()
+    }
+}
+
+// middleware untuk validasi parameter ID
+function validateParams(schema) {
+    return (req, res, next) => {
+        const { error, value } = sceham.validate(req.params)
     }
 }
