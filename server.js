@@ -2,6 +2,7 @@ import express from 'express';
 import pg from 'pg';
 import Joi from 'joi';
 import { errorResponse, successResponse } from './src/utils/response.js';
+import { validateBody, validateParams } from './src/middlewares/validate.js';
 
 const app = express()
 const port = 3000
@@ -56,6 +57,40 @@ app.get('/', async (req, res) => {
         return errorResponse(res, 'Gagal mengambil data biodata', 500)
     }
 })
+
+app.post(
+    '/biodata',
+    validateBody(biodataSchema),
+    async (req, res) => {
+        const { id, nama, nim, kelas } = req.body
+
+        const result = await pool.query(
+            `INSERT INTO biodata (id, nama, nim, kelas)
+            VALUES ($1, $2, $3, $4) RETURNING *`,
+            [id ?? null, nama, nim, kelas]
+        )
+
+        return successResponse(
+            res,
+            'Data biodata berhasil ditambahkan',
+            result.rows[0],
+            201
+        )
+    }
+)
+
+app.put(
+    '/biodata/:id',
+    validateParams(idSchema),
+    validateBody(biodataSchema.fork(
+        ['nama', 'nim', 'kelas'],
+        field => field.required()
+    ).fork(['id'], field => field.forbidden())),
+
+    async (req, res) => {
+        const { id } = req.params
+        const { nama, nim, kelas } = req.body
+    }
 
 app.listen(port, () => {
     console.log(`Server berjalan di http://localhost:${port}`)
